@@ -1,0 +1,119 @@
+<div class="container">
+  <!-- <app-document-upload [empresaId]="empresaId"></app-document-upload> -->
+  <!-- <h5 class="text-secondary my-4 ml-5">Agregar documentos</h5> -->
+  <div class="float-right mx-3 my-3">
+    <button
+      class="btn btn-create"
+      data-target="#modal-documento"
+      data-toggle="modal"
+      type="button"
+      (click)="openDefaultModal(modalDocumento)"
+    >
+      Subir Documentos
+    </button>
+  </div>
+
+  <table class="table" *ngIf="dataLoaded; else skeleton">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">NOTAS</th>
+        <th scope="col">ACCION</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let documento of documentos">
+        <th scope="row">{{ documento.id }}</th>
+        <td>{{ documento.nota }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm mr-2" type="button" (click)="downloadFile(documento)">
+            <i class=" fa fa-download"></i>
+          </button>
+
+          <button
+            (confirm)="deleteDocumento($event, documento.id)"
+            [swal]="confirmDgConfig"
+            class="btn btn-danger btn-sm"
+            type="button"
+          >
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #skeleton>
+    <div class="card-body">
+      <app-table-skeleton-loader></app-table-skeleton-loader>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #modalDocumento>
+  <div class=" modal-header">
+    <h6 class=" modal-title" id="modal-title-default">
+      Agregar documento
+    </h6>
+
+    <button aria-label="Close" class=" close" data-dismiss="modal" type="button" (click)="documentoModal.hide()">
+      <span aria-hidden="true"> × </span>
+    </button>
+  </div>
+
+  <div class=" modal-body">
+    <div class="row" *ngIf="categorias.length > 0">
+      <div class="col-2">Categoria</div>
+      <div class="col-10">
+        <div class="btn-group" dropdown>
+          <button
+            id="button-basic"
+            dropdownToggle
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            aria-controls="dropdown-basic"
+          >
+            <span *ngIf="categoria && !mostrar" class="caret"> Seleccione Categoria</span>
+            <span *ngIf="categoria && mostrar" class="caret">{{ categoria.nombre }} </span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">
+              <a class="dropdown-item" *ngFor="let a of categorias" (click)="setCategoria(a)">{{ a.nombre }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">Notas</div>
+      <div class="col-10">
+        <textarea
+          class="form-control"
+          aria-label="With textarea"
+          (change)="setNotas($event)"
+          [placeholder]="'Notas...'"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+      <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" />
+    </div>
+    <div class="files-list" *ngFor="let file of files; let i = index">
+      <p>{{ file.name }}</p>
+      <button class="delete-file" (click)="deleteAttachment(i)">
+        <img src="../../assets/Recycle_Bin_Full.png" />
+      </button>
+    </div>
+  </div>
+
+  <div class=" modal-footer">
+    <button class=" btn btn-primary" type="button" (click)="upload()">
+      Guardar
+    </button>
+
+    <button class=" btn btn-link ml-auto" data-dismiss="modal" type="button" (click)="documentoModal.hide()">
+      Cerrar
+    </button>
+  </div>
+</ng-template>

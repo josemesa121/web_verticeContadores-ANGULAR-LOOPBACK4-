@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-12">
+    <div class="btn-group" dropdown>
+      <button
+        id="button-basic"
+        dropdownToggle
+        type="button"
+        class="btn btn-primary dropdown-toggle"
+        aria-controls="dropdown-basic"
+      >
+        <span *ngIf="anios && !mostrar" class="caret"> Años</span>
+        <span *ngIf="anios && mostrar" class="caret">{{ aniosList.anio }} </span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+        <li role="menuitem">
+          <a class="dropdown-item" *ngFor="let a of anios" (click)="oblig(a.id, a)">{{ a.anio }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="dataLoaded; else skeleton">
+      <ul *ngIf="mostrar" class="list-group mt-3">
+        <li
+          class="list-group-item list-group-item-action color {{ obligacion.activo ? 'active' : '' }} pointer"
+          *ngFor="let obligacion of obligaciones"
+          (confirm)="toggleObligacion(obligacion)"
+          [swal]="confirmDgConfig"
+        >
+          {{ obligacion.nombre }}
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #skeleton>
+      <div class="card-body">
+        <app-table-skeleton-loader></app-table-skeleton-loader>
+      </div>
+    </ng-template>
+  </div>
+</div>

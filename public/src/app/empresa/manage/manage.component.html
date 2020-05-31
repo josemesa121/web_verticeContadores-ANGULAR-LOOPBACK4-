@@ -1,0 +1,21 @@
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/empresa">Empresas</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Nueva Empresa</li>
+    </ol>
+  </nav>
+  <form [formGroup]="form" (ngSubmit)="submit(model)">
+    <div class="form-row">
+      <div class="col-md-12 mb-3">
+        <div class="card margin">
+          <div class="card-body">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-create my-3 mb-5 right">{{ isNewRecord ? 'Crear' : 'Actualizar' }}</button>
+  </form>
+</div>

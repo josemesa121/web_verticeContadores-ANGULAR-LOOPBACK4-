@@ -1,0 +1,49 @@
+<div class="container">
+  <h4 class="text-secondary mt-4 mb-4 ml-5">Usuarios</h4>
+  <div class="card margin-card">
+    <div class="card-hearder">
+      <div class="float-right mx-3 my-3"></div>
+    </div>
+
+    <div class="card-body" *ngIf="dataLoaded; else skeleton">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Email</th>
+            <th scope="col">Admin</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody class="">
+          <tr class="pointer " *ngFor="let user of users">
+            <td scope="row">{{ user.firstName }}</td>
+            <td>{{ user.lastName }} {{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.super_admin == 1 ? 'SI' : '' }}</td>
+            <td class=" aling">
+              <button (click)="updateUserRol(user)" class="btn btn-info btn-sm mr-5" type="button">
+                <i class="fas fa-user-cog"></i>
+              </button>
+              <button
+                *ngIf="currentUserInfo.id != user.id"
+                (click)="confirmDeleteUser(user)"
+                class="btn btn-danger btn-sm mr-5"
+                type="button"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #skeleton>
+      <div class="card-body">
+        <app-table-skeleton-loader></app-table-skeleton-loader>
+      </div>
+    </ng-template>
+  </div>
+</div>

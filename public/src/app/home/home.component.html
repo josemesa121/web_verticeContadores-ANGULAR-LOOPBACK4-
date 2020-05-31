@@ -1,0 +1,63 @@
+<div class="container-fluid">
+  <div class="card" #TABLE #table>
+    <h5 class="card-title">
+      <div class="d-flex w-100 px-2 justify-content-center title-color text-uppercase">
+        <app-week-picker class="my-3" (changed)="loadData($event)"></app-week-picker>
+      </div>
+    </h5>
+
+    <div *ngFor="let fecha of fechasArray; index as i">
+      <button *ngIf="i == 0" (click)="ExportTOExcel()" class="btn btn-success mb-3 ml-4">Exportar a Excel</button>
+      <h5 class="mb-1 text-secondary mt-4 mb-4 ml-5 text-uppercase">
+        {{ fechaES(fecha) }} ( {{ fechaMoment(fecha) }} )
+      </h5>
+
+      <!-- ESTA TABLA VISIBLE SOLO EN EL EXPORT EXCEL -->
+      <table class="d-none">
+        <tr>
+          <th>{{ fechaES(fecha) }} ( {{ fechaMoment(fecha) }} )</th>
+        </tr>
+      </table>
+
+      <table class="table table-style" *ngIf="dataLoaded; else skeleton">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">EMPRESA</th>
+            <th scope="col">OBLIGACION</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let obligacion of getObligactionByFecha(fecha)"
+            [routerLink]="['/empresa', obligacion.empresaId, 'obligacion', obligacion.obligacionId]"
+          >
+            <th scope="row">{{ obligacion.empresaNombre }}</th>
+            <td>{{ obligacion.nombre }}</td>
+            <td>
+              <h5>
+                <span class="badge badge-pill text-white badge-{{ obligacion.status == 0 ? 'warning' : 'success' }}">
+                  {{ obligacion.status == 0 ? 'Pendiente' : 'OK' }}
+                </span>
+              </h5>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #skeleton>
+        <div class="card-body">
+          <app-table-skeleton-loader></app-table-skeleton-loader>
+        </div>
+      </ng-template>
+    </div>
+
+    <table class="table table-striped table-style" *ngIf="fechasArray && fechasArray.length == 0">
+      <tbody>
+        <tr>
+          <th scope="row">No hay eventos para estas fechas</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

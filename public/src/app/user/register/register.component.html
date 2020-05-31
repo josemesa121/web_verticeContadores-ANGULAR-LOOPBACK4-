@@ -1,0 +1,30 @@
+<div class="login-container bg-light">
+  <div class="login-box">
+    <img class="logo" src="assets/vertice-logo.png" alt="Vertice Accounts" />
+    <div *ngIf="false">
+      <h6 class="d-inline-block">v{{ version }}</h6>
+      <div class="d-inline-block ml-3" ngbDropdown>
+        <button id="language-dropdown" class="btn btn-sm btn-secondary" ngbDropdownToggle>
+          {{ currentLanguage }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="language-dropdown">
+          <button class="dropdown-item" *ngFor="let language of languages" (click)="setLanguage(language)">
+            {{ language }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="card col-md-6 mt-3 mx-auto">
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="registrar(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            <br />
+            Ya tienes un usuario? ve a la pantalla de <a routerLink="/login">Login</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

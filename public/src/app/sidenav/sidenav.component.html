@@ -1,0 +1,67 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
+  <mat-toolbar class="example-toolbar background-header">
+    <span class="gap">
+      <button mat-icon-button (click)="snav.toggle()" class="navbar-toggler">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a class="navbar-brand" routerLink="/"
+        ><img height="50" class="" src="assets/vertice-logo.png" alt="Vertice Accounts"/></a
+    ></span>
+    <span class="filler"></span>
+    <span>
+      <button fxShow="true" fxHide.lt-md="true" mat-button [matMenuTriggerFor]="menu">
+        <div class="row">
+          <div class=" col ml-2 my-2 text-right">
+            <b>{{ username }}</b>
+
+            <span class=" text-success"> ● </span>
+
+            <small> Online </small>
+          </div>
+
+          <!-- <div class=" col-auto">
+            <a id="user-dropdown" class="avatar rounded-circle">
+              <img alt="Image placeholder" src="../../../assets/team-4.jpg" />
+            </a>
+          </div> -->
+        </div>
+      </button></span
+    >
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <span translate>Logueado como: </span> <b>{{ username }}</b>
+      </button>
+      <button class="dropdown-item" routerLink="/update-password" translate>Actualizar clave</button>
+      <button class="dropdown-item" (click)="logout()" translate>Salir</button>
+    </mat-menu>
+    <!-- <app-header></app-header> -->
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-nav-list>
+        <div *ngFor="let nav of fillerNav">
+          <a mat-list-item [routerLink]="valRoute(nav.route)">
+            <div *ngIf="val(nav.name)">
+              <mat-icon class="icono">{{ nav.icon }}</mat-icon>
+              <b class="name-bar ml-3">{{ nav.name }}</b>
+            </div>
+          </a>
+        </div>
+        <a fxHide.gt-sm="true" mat-list-item (click)="logout()">
+          <mat-icon class="icono">exit_to_app</mat-icon>
+          <b class="name-bar ml-3">Salir</b>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="mt-4">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

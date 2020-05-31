@@ -1,0 +1,84 @@
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/empresa">Empresas</a></li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a routerLink="/empresa/{{ model?.id }}">{{ model?.nombre }}</a>
+      </li>
+      <li class="breadcrumb-item">Obligacion - {{ obligacionModel?.nombre }}</li>
+    </ol>
+  </nav>
+  <div class="card margin-card" #TABLE #table>
+    <div class="card-body" *ngIf="dataLoaded; else skeleton">
+      <button (click)="ExportTOExcel()" class="btn btn-success mb-3">Exportar a Excel</button>
+
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">OBLIGACION</th>
+            <th scope="col">FECHA</th>
+            <th scope="col">DESCRIPCIÓN</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class=""
+            *ngFor="let obligacion of obligaciones"
+            ngbPopover="{{ this.obligacion.nota || '(Sin nota)' }}"
+            triggers="mouseenter:mouseleave"
+          >
+            <th scope="row">{{ obligacionModel.nombre }}</th>
+            <td>
+              {{ fechaES(obligacion.fecha) }}
+              ( {{ fechaMoment(obligacion.fecha) }} )
+            </td>
+            <td>{{ obligacion.descripcion }}</td>
+            <td>
+              <h5>
+                <span class="badge badge-pill text-white badge-{{ obligacion.status == 0 ? 'warning' : 'success' }}">
+                  {{ obligacion.status == 0 ? 'Pendiente' : 'Completado' }}
+                </span>
+              </h5>
+            </td>
+            <td class="aling">
+              <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-info" (click)="open(content, obligacion)">
+                  <i class="fas fa-sticky-note"></i>
+                </button>
+                <button type="button" class="btn btn-info" (click)="marcarCompletado(obligacion)">
+                  <i class="fas fa-{{ obligacion.status == 0 ? 'check' : 'times' }}"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #skeleton>
+      <div class="card-body">
+        <app-button-skeleton-loader></app-button-skeleton-loader>
+        <app-table-skeleton-loader></app-table-skeleton-loader>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-secondary mt-4 mb-4 ml-5 text-uppercase" id="modal-basic-title">Nota Obligacion</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- {{ modalObligacion.nota || '(Sin nota)'}} -->
+    <formly-form [form]="form" [fields]="modalFields" [model]="modalObligacion"></formly-form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-create" (click)="actualizarNota()">Actualizar</button>
+  </div>
+</ng-template>

@@ -1,0 +1,21 @@
+<form novalidate [formGroup]="form" (ngSubmit)="submit(model)">
+  <div class="row">
+    <div class="col input-group mb-3">
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          formControlName="archivo"
+          id="importFile"
+          (change)="onChange($event.target.files)"
+        />
+        <label class="custom-file-label" #labelImport for="importFile"
+          ><i class="fas fa-search"></i> Subir archivo</label
+        >
+      </div>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-info">Subir</button>
+    </div>
+  </div>
+</form>

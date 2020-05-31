@@ -1,0 +1,47 @@
+<div class="container">
+  <h4 class="text-secondary mt-4 mb-4 ml-5">Empresas</h4>
+  <div class="card margin-card">
+    <div class="card-hearder">
+      <div class="float-right mx-3 my-3">
+        <a class="btn btn-create" routerLink="/empresa/crear">Crear Nueva</a>
+      </div>
+    </div>
+
+    <div class="card-body" *ngIf="dataLoaded; else skeleton">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th style="cursor:pointer" (click)="orderBy('nombre')" scope="col">NOMBRE</th>
+            <th style="cursor:pointer" (click)="orderBy('nit')" scope="col">NIT</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody class="">
+          <tr class="pointer " *ngFor="let empresa of empresas" (click)="viewEmpresa(empresa.id)">
+            <th scope="row">{{ empresa.nombre }}</th>
+            <td>{{ empresa.nit }}</td>
+            <td class=" aling">
+              <button class="btn btn-info btn-sm mr-5" type="button" (click)="editEmpresa($event, empresa.id)">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              <button
+                (confirm)="deleteEmpresa($event, empresa.id)"
+                [swal]="confirmDgConfig"
+                class="btn btn-danger btn-sm"
+                type="button"
+              >
+                <i class="far fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #skeleton>
+      <div class="card-body">
+        <app-table-skeleton-loader></app-table-skeleton-loader>
+      </div>
+    </ng-template>
+  </div>
+</div>

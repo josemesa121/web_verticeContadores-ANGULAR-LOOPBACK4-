@@ -1,0 +1,61 @@
+<div class="container">
+  <h4 class="text-secondary mt-4 mb-4 ml-5">Obligaciones</h4>
+  <div class="card margin-card">
+    <div class="card-hearder">
+      <div class="float-left mx-3 my-3">
+        <div class="btn-group" dropdown>
+          <button
+            id="button-basic"
+            dropdownToggle
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            aria-controls="dropdown-basic"
+          >
+            <span *ngIf="anios && !mostrar" class="caret"> Años</span>
+            <span *ngIf="anios && mostrar" class="caret">{{ aniosList }} </span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">
+              <a class="dropdown-item" *ngFor="let a of anios" (click)="oblig(a)">{{ a.anio }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="float-right mx-3 my-3">
+        <a class="btn btn-create" routerLink="/obligacion/crear">Crear Nueva</a>
+      </div>
+    </div>
+
+    <div class="card-body" *ngIf="dataLoaded; else skeleton">
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">NOMBRE</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="pointer" *ngFor="let obligacion of obligaciones" (click)="viewObligacion(obligacion.id)">
+            <th scope="row">{{ obligacion.nombre }}</th>
+            <td class="aling">
+              <button
+                (confirm)="deleteObligacion($event, obligacion.id)"
+                [swal]="confirmDgConfig"
+                class="btn btn-danger btn-sm"
+                type="button"
+              >
+                <i class="far fa-trash-alt"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #skeleton>
+      <div class="card-body">
+        <app-table-skeleton-loader></app-table-skeleton-loader>
+      </div>
+    </ng-template>
+  </div>
+</div>

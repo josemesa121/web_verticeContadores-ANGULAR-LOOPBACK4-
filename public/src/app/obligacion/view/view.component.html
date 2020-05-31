@@ -1,0 +1,161 @@
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/obligacion">Obligaciones</a></li>
+      <li class="breadcrumb-item" aria-current="page">{{ model?.nombre }}</li>
+    </ol>
+  </nav>
+  <h4 class="text-secondary mt-4 mb-4 ml-5 text-uppercase">{{ model?.nombre }}</h4>
+  <div class="text-center mb-3">
+    <button (click)="open(content)" class="btn btn-primary">Actualizar nombre</button>
+  </div>
+
+  <div class="card margin-card">
+    <div class="card-hearder">
+      <h4 class="d-inline-block mx-4 my-3">Fechas</h4>
+    </div>
+
+    <div class="card-body" *ngIf="dataLoaded; else skeleton">
+      <table class="table" *ngIf="fechas">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">TERMINAL</th>
+            <th scope="col">FECHA</th>
+            <th scope="col">DESCRIPCIÓN</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fecha of fechas" class="">
+            <td scope="row">{{ fecha.terminal }}</td>
+            <td>
+              {{ fechaES(fecha.fecha) }}
+              ( {{ fechaMoment(fecha.fecha) }} )
+              <input
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                #c2="ngModel"
+                [(ngModel)]="fecha.fecha"
+                ngbDatepicker
+                #d2="ngbDatepicker"
+                (dateSelect)="actualizarFecha($event, fecha)"
+                style="width: 1px; border:none;"
+              />
+            </td>
+            <td>
+              {{ fecha.descripcion }}
+            </td>
+            <td>
+              <button class="btn btn-info btn-sm" (click)="d2.toggle()" type="button">
+                <i class="fa fa-calendar"></i>
+              </button>
+              <button (click)="loadModalFecha(content2, fecha)" class="btn btn-primary btn-sm ml-1">
+                <i class="fa fa-edit"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #skeleton>
+      <div class="card-body">
+        <app-table-skeleton-loader></app-table-skeleton-loader>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Actualizar obligación</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #obligacionForm="ngForm">
+      <div class="form-group">
+        <label class="d-block input2-style">
+          Nombre obligación
+          <input
+            type="text"
+            [(ngModel)]="nombre"
+            name="nombreObligacionInput"
+            #nombreObligacionInput="ngModel"
+            class="form-control"
+            placeholder="Nombre"
+            maxlength="511"
+            required
+          />
+          <small
+            [hidden]="nombreObligacionInput.valid || nombreObligacionInput.untouched"
+            class="text-danger"
+            translate
+          >
+            Nombre es obligatorio
+          </small>
+        </label>
+      </div>
+    </form>
+
+    <!-- <div *ngIf="errorMessage != ''" class="text-danger text-center">
+      {{ errorMessage }}
+    </div> -->
+  </div>
+  <div class="modal-footer">
+    <button
+      [disabled]="obligacionForm.invalid"
+      type="button"
+      class="btn btn-primary"
+      (click)="updateObligacion(obligacionForm)"
+    >
+      Guardar
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Actualizar fecha</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #fechaForm="ngForm">
+      <div class="form-group">
+        <label class="d-block input2-style">
+          Descripción
+          <input
+            type="text"
+            [(ngModel)]="fechaSend.descripcion"
+            name="fechaDescripcionInput"
+            #fechaDescripcionInput="ngModel"
+            class="form-control"
+            placeholder="descripcion"
+            maxlength="511"
+            required
+          />
+          <small
+            [hidden]="fechaDescripcionInput.valid || fechaDescripcionInput.untouched"
+            class="text-danger"
+            translate
+          >
+            Descripcin es obligatorio
+          </small>
+        </label>
+      </div>
+    </form>
+
+    <!-- <div *ngIf="errorMessage != ''" class="text-danger text-center">
+      {{ errorMessage }}
+    </div> -->
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="fechaForm.invalid" type="button" class="btn btn-primary" (click)="updateFecha(fechaForm)">
+      Guardar
+    </button>
+  </div>
+</ng-template>
