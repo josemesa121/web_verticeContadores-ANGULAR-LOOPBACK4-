@@ -44,7 +44,7 @@
     "@ngx-formly/core": "^5.4.2",
     "@ngx-translate/core": "^11.0.1",
     "@sweetalert2/ngx-sweetalert2": "^6.0.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.1.1",
     "file-saver": "^2.0.2",
     "material-design-icons-iconfont": "^5.0.1",
